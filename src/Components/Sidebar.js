@@ -11,7 +11,7 @@ const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className='sidebar__header'>
-                <Avatar/>
+                <Avatar src="https://avatars.githubusercontent.com/u/38194222?s=200&v=2"/>
                 <div className="sidebar__headerRight">
                     <IconButton>
                         <DonutLargeIcon/>
