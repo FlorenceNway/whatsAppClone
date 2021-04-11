@@ -51,7 +51,9 @@ db.once('open',() => {
             const messageDetails = change.fullDocument;
             pusher.trigger('messages', 'inserted', { // (channel,event)pusher has a channal called 'messages', insert data we want to watch
                 name: messageDetails.name,
-                message: messageDetails.message
+                message: messageDetails.message,
+                timestamp: messageDetails.timestamp,
+                received: messageDetails.received,
             });
         }
         else {
@@ -72,7 +74,7 @@ app.post('/messages/new',(req,res) => {
         if(err) {
             res.status(500).send(err)
         }else {
-            res.status(201).send(`new message created: \n ${data}`)
+            res.status(201).send(data)
         }
     })
 })
@@ -84,7 +86,7 @@ app.get('/messages/sync',(req,res) => {
         if(err) {
             res.status(500).send(err)
         }else {
-            res.status(200).send(`new message created: \n ${data}`)
+            res.status(200).send(data)
         }
     })
 })
