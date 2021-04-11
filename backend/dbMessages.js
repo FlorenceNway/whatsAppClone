@@ -5,6 +5,7 @@ const whatsappSchema = mongoose.Schema({
     message: String,
     name: String,
     timestamp: String,
+    received: Boolean,
 })
-
-export default mongoose.model('messageContent', whatsappSchema)
+// collection
+export default mongoose.model('messagecontents', whatsappSchema) // same name as appdb.<collectionname> in cluster
