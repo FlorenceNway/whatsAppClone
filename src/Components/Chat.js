@@ -3,9 +3,23 @@ import { AttachFile, InsertEmoticon, Mic, MoreVert, SearchOutlined } from '@mate
 import React from 'react';
 import { useEffect, useState } from 'react';
 import "./css/Chat.css";
+import axios from "../axios";
 
 const Chat = ({messages}) => {
-    const [seed, setSeed] = useState('')
+    const [seed, setSeed] = useState()
+    const [input, setInput] = useState('')
+
+    const sendMessage = async (e) => {
+        e.preventDefault();
+       await  axios
+        .post('./messages/new',{
+            "message":input,
+            "name":"Demo Name",
+            "timestamp":new Date().toUTCString(),
+            "received":false
+        })
+        setInput("")
+    }
 
     useEffect(()=> {
         setSeed(Math.floor(Math.random() * 5000))
@@ -45,8 +59,8 @@ const Chat = ({messages}) => {
             <div className="chat__footer">
                 <InsertEmoticon/>
                 <form action="">
-                    <input placeholder="type a message" type="text"/>
-                    <button type='submit'>Send a message</button>
+                    <input value={input} onChange={e => setInput(e.target.value)} placeholder="type a message" type="text"/>
+                    <button onClick={sendMessage} type='submit'>Send a message</button>
                 </form>
                 <Mic/>
             </div>
