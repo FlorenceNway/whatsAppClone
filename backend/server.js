@@ -21,7 +21,7 @@ const pusher = new Pusher({
 app.use(express.json())
 
 // DB config
-const connection_url = 'mongodb+srv://admin:<pw>@cluster0.883rx.mongodb.net/whatsappdb?retryWrites=true&w=majority'
+const connection_url = 'mongodb+srv://admin:pw@cluster0.883rx.mongodb.net/whatsappdb?retryWrites=true&w=majority'
 mongoose.connect(connection_url,{
     userCreateIndex: true,
     useNewUrlParser: true,
@@ -40,7 +40,7 @@ db.once('open',() => {
         console.log(change)
         if(change.operationType === 'insert') {
             const messageDetails = change.fullDocument;
-            pusher.trigger('messages', 'inserted', {
+            pusher.trigger('messages', 'inserted', { // (channel,event)pusher has a channal called 'messages', insert data we want to watch
                 name: messageDetails.user,
                 message: messageDetails.message
             });
