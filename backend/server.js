@@ -3,6 +3,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Messages from './dbMessages.js';
 import Pusher from 'pusher';
+import cors from 'cors';
+
 
 //app config
 const app = express()
@@ -19,11 +21,13 @@ const pusher = new Pusher({
 
 // middleware
 app.use(express.json())
-app.use((req,res,next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "*");
-    next();
-})
+app.use(cors());
+// same as cors \|/
+// app.use((req,res,next) => {
+//     res.setHeader("Access-Control-Allow-Origin", "*");
+//     res.setHeader("Access-Control-Allow-Headers", "*");
+//     next();
+// })
 
 // DB config
 const connection_url = 'mongodb+srv://admin:pw@cluster0.883rx.mongodb.net/whatsappdb?retryWrites=true&w=majority'
@@ -46,7 +50,7 @@ db.once('open',() => {
         if(change.operationType === 'insert') {
             const messageDetails = change.fullDocument;
             pusher.trigger('messages', 'inserted', { // (channel,event)pusher has a channal called 'messages', insert data we want to watch
-                name: messageDetails.user,
+                name: messageDetails.name,
                 message: messageDetails.message
             });
         }
